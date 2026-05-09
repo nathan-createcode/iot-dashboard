@@ -10,6 +10,7 @@ import {
 export default function Home() {
   const [countryData, setCountryData] = useState([])
   const [criticalData, setCriticalData] = useState([])
+  const [totalCritical, setTotalCritical] = useState(0)
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
 
@@ -30,7 +31,6 @@ export default function Home() {
         .from('iot_critical')
         .select('cca2, critical_devices')
 
-      // Gabungkan data critical ke country
       const criticalMap = {}
       if (allCritical) {
         allCritical.forEach(d => {
@@ -38,6 +38,9 @@ export default function Home() {
           criticalMap[d.cca2] += d.critical_devices
         })
       }
+
+      const total = Object.values(criticalMap).reduce((sum, v) => sum + v, 0)
+      setTotalCritical(total)
 
       const countryWithCritical = (country || []).map(d => ({
         ...d,
@@ -64,7 +67,6 @@ export default function Home() {
   const avgHumidity = countryData.length
     ? (countryData.reduce((sum, d) => sum + (d.avg_humidity || 0), 0) / countryData.length).toFixed(1)
     : 0
-  const totalCritical = countryData.reduce((sum, d) => sum + (d.critical_devices || 0), 0)
 
   if (loading) {
     return (
@@ -172,7 +174,7 @@ export default function Home() {
                   <td className="py-2 pr-4 text-right text-orange-400">{row.avg_temp}</td>
                   <td className="py-2 pr-4 text-right text-blue-400">{row.avg_humidity}</td>
                   <td className="py-2 pr-4 text-right text-green-400">{row.avg_co2}</td>
-                  <td className="py-2 pr-4 text-right text-red-400">{row.critical_devices?.toLocaleString() || '—'}</td>
+                  <td className="py-2 pr-4 text-right text-red-400">{row.critical_devices?.toLocaleString() || '0'}</td>
                   <td className="py-2 text-right text-cyan-400">{row.total_devices?.toLocaleString()}</td>
                 </tr>
               ))}
