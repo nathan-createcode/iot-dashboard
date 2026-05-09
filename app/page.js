@@ -115,7 +115,7 @@ export default function Home() {
               labelStyle={{ color: '#F9FAFB' }}
             />
             <Legend />
-            <Bar dataKey="critical_devices" fill="#F87171" name="Perangkat Baterai Kritis" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="critical_devices" fill="#F87171" name="Perangkat Kritis" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
