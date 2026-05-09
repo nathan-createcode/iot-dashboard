@@ -115,7 +115,7 @@ export default function Home() {
               labelStyle={{ color: '#F9FAFB' }}
             />
             <Legend />
-            <Bar dataKey="critical_devices" fill="#F87171" name="Perangkat Kritis" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="critical_devices" fill="#F87171" name="Perangkat Baterai Kritis" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -160,7 +160,7 @@ export default function Home() {
                 <th className="text-right py-2 pr-4">Suhu (°C)</th>
                 <th className="text-right py-2 pr-4">Kelembapan (%)</th>
                 <th className="text-right py-2 pr-4">CO₂</th>
-                <th className="text-right py-2 pr-4">Perangkat Kritis</th>
+                <th className="text-right py-2 pr-4">Batrei Perangkat Kritis</th>
                 <th className="text-right py-2">Total Perangkat</th>
               </tr>
             </thead>
