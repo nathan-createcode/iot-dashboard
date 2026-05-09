@@ -26,7 +26,25 @@ export default function Home() {
         .order('critical_devices', { ascending: false })
         .limit(10)
 
-      setCountryData(country || [])
+      const { data: allCritical } = await supabase
+        .from('iot_critical')
+        .select('cca2, critical_devices')
+
+      // Gabungkan data critical ke country
+      const criticalMap = {}
+      if (allCritical) {
+        allCritical.forEach(d => {
+          if (!criticalMap[d.cca2]) criticalMap[d.cca2] = 0
+          criticalMap[d.cca2] += d.critical_devices
+        })
+      }
+
+      const countryWithCritical = (country || []).map(d => ({
+        ...d,
+        critical_devices: criticalMap[d.cca2] || 0
+      }))
+
+      setCountryData(countryWithCritical)
       setCriticalData(critical || [])
       setLoading(false)
     }
@@ -46,7 +64,7 @@ export default function Home() {
   const avgHumidity = countryData.length
     ? (countryData.reduce((sum, d) => sum + (d.avg_humidity || 0), 0) / countryData.length).toFixed(1)
     : 0
-  const totalCritical = criticalData.reduce((sum, d) => sum + (d.critical_devices || 0), 0)
+  const totalCritical = countryData.reduce((sum, d) => sum + (d.critical_devices || 0), 0)
 
   if (loading) {
     return (
@@ -142,6 +160,7 @@ export default function Home() {
                 <th className="text-right py-2 pr-4">Suhu (°C)</th>
                 <th className="text-right py-2 pr-4">Kelembapan (%)</th>
                 <th className="text-right py-2 pr-4">CO₂</th>
+                <th className="text-right py-2 pr-4">Perangkat Kritis</th>
                 <th className="text-right py-2">Total Perangkat</th>
               </tr>
             </thead>
@@ -153,6 +172,7 @@ export default function Home() {
                   <td className="py-2 pr-4 text-right text-orange-400">{row.avg_temp}</td>
                   <td className="py-2 pr-4 text-right text-blue-400">{row.avg_humidity}</td>
                   <td className="py-2 pr-4 text-right text-green-400">{row.avg_co2}</td>
+                  <td className="py-2 pr-4 text-right text-red-400">{row.critical_devices?.toLocaleString() || '—'}</td>
                   <td className="py-2 text-right text-cyan-400">{row.total_devices?.toLocaleString()}</td>
                 </tr>
               ))}
