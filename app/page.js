@@ -97,7 +97,7 @@ export default function Home() {
           <p className="text-2xl font-bold text-blue-400">{avgHumidity}%</p>
         </div>
         <div className="bg-gray-800 rounded-xl p-4">
-          <p className="text-gray-400 text-sm">Baterai Kritis</p>
+          <p className="text-gray-400 text-sm">Perangkat Baterai Kritis</p>
           <p className="text-2xl font-bold text-red-400">{totalCritical.toLocaleString()}</p>
         </div>
       </div>
@@ -160,7 +160,7 @@ export default function Home() {
                 <th className="text-right py-2 pr-4">Suhu (°C)</th>
                 <th className="text-right py-2 pr-4">Kelembapan (%)</th>
                 <th className="text-right py-2 pr-4">CO₂</th>
-                <th className="text-right py-2 pr-4">Batrei Perangkat Kritis</th>
+                <th className="text-right py-2 pr-4">Perangkat Baterai Kritis</th>
                 <th className="text-right py-2">Total Perangkat</th>
               </tr>
             </thead>
